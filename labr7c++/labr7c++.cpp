@@ -71,11 +71,7 @@ public:
 
 	}
 
-	void sort1(int n) {
-
-		student_book.sort1(n);
-
-	}
+	
 
 
 	void sort(int n) {
@@ -83,12 +79,14 @@ public:
 		int* g = new int();
 		float* a1 = new float();
 		float* a2 = new float();
+		int* ID = new int();
+		int* ID1 = new int();
 		for (int i = 0;i < n - 1;i++) {
 			for (int j = n - 1;j > i;j--)
 				if (group[j - 1] < group[j]) {
 					ln = last_name[j - 1];
-					last_name[j - 1]= '\0';
-					last_name[j - 1]= last_name[j];
+					last_name[j - 1] = '\0';
+					last_name[j - 1] = last_name[j];
 					last_name[j] = '\0';
 					last_name[j] = ln;
 					ln[0] = '\0';
@@ -106,6 +104,11 @@ public:
 					avg_ball2[j - 1] = avg_ball2[j];
 					avg_ball2[j] = *a2;
 
+					*ID = student_book.get_id(j - 1);
+					*ID1 = student_book.get_id(j);
+					student_book.setId(j - 1, *ID1);
+					student_book.setId(j, *ID);
+
 
 
 
@@ -117,15 +120,17 @@ public:
 		delete g;
 		delete a1;
 		delete a2;
+		delete ID;
+		delete ID1;
 
-	}
+	}// сортировка по возрастанию номера группы
 
 	void zadanie(int n) {
 		printf("Студенты, у которых оценка за 2 экзамен ниже, чем за первый\n");
 		for (int i = 0;i < n;i++) {
 			if (avg_ball2[i] < avg_ball1[i]) {
 
-				printf("%s\n", last_name[i]);
+				std::cout<<"Студент:" << last_name[i];
 
 			}
 
@@ -236,23 +241,9 @@ private:
 			return id[i];
 
 		}
+		void setId(int i, int id) {
 
-		void sort1(int n) {
-			int* ID = new int();
-			for (int i = 0;i < n - 1;i++) {
-				for (int j = n - 1;j > i;j--) {
-					students st;
-					if (st.group[j - 1] < st.group[j]) {
-
-						*ID = id[j - 1];
-						id[j - 1] = id[j];
-						id[j] = *ID;
-
-					}
-
-				}
-			}
-			delete ID;
+			this->id[i] = id;
 		}
 
 	};
@@ -316,7 +307,6 @@ int _tmain() {
 	printf("До сортировки:\n");
 	student->output(n);
 	student->sort(n);
-	student->sort1(n);
 	printf("После сортировки:\n");
 	student->output(n);
 	student->zadanie(n);
